@@ -1,0 +1,33 @@
+{% include 'base.html' %}
+{% load static %}
+
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+  <link rel="stylesheet" type="text/css" href="{% static 'css/index.css' %}">
+</head>
+
+<body>
+  {% block content %}
+  <div class="container-fluid wrapper">
+    <div class="row justify-content-center">
+      <div class="col text-center">
+        <h1>MusicianHub</h1>
+        <p id="description"><strong>Welcome to MusicianHub!</strong> <br>Join fellow musicians and play as a band!</p>
+        {% if user.is_authenticated %}
+        <h3 id="greeting">Hi, {{ user.username }}!</h3>
+        {% else %}
+        <a class="btn btn-success" id="registerButton" href="{% url 'register' %}">Get Started</a>
+        {% endif %}
+        <img class="mx-auto d-block" src="{% static 'img/logo2.png' %}" alt="Logo">
+      </div>
+    </div>
+
+  </div>
+
+  {% endblock %}
+</body>
+
+</html>

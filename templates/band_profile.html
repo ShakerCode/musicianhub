@@ -1,0 +1,58 @@
+{% include 'base.html' %}
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+
+<head>
+
+</head>
+
+<body>
+    {% block content %}
+    {% if user.is_authenticated %}
+    <div class="container-fluid">
+        <div class="row justify-content-center pt-5">
+            <div class="card w-50" style="background-color: #DCDCDC;">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <h1 class="card-title">{{band.bandname}}</h1>
+                            <h3>Leader: {{band.leader}}</h3>
+                            <p>Genre: {{band.genre}}</p>
+                            <p>City: {{band.city}}</p>
+                            <p>Total members: {{band.total_members}}</p>
+                            <p>Members: </p>
+                            <ul>
+                                {% for member in member_list %}
+                                <li>
+                                    <p><a href="{% url 'user_profile' member.pk %}">{{member.first_name}}
+                                            {{member.last_name}} ({{member.username}})</a></p>
+                                </li>
+                                {% empty %}
+                                <p>No members</p>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        <div class="col-sm-6">
+                            <img class="card-img" src="{% static 'img/logo2_halfsize.png' %}" alt="User Image">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row justify-content-center pt-3">
+            <div class="col-6 mr-4">
+                <a class="btn btn-dark" href="{{request.META.HTTP_REFERER}}">Back</a>
+            </div>
+        </div>
+    </div>
+
+    {% else %}
+    <p style="text-align: center;">Log in to check band profiles</p>
+    {% endif %}
+
+    {% endblock %}
+</body>
+
+</html>

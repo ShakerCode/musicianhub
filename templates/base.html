@@ -1,0 +1,20 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+
+<head>
+  {% include 'meta.html' %}
+  {% include 'navbar.html' %}
+  <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
+  <title>{% block title %}MusicianHub{% endblock %}</title>
+</head>
+
+<body>
+  <main>
+    {% block content %}
+    {% endblock %}
+  </main>
+</body>
+
+</html>

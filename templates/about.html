@@ -1,0 +1,54 @@
+{% include 'base.html' %}
+{% load static %}
+
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head></head>
+
+<body>
+    {% block content %}
+    <div class="container-fluid">
+        <div class="row justify-content-center">
+            <h1>About</h1>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-sm-1">
+                <p><strong>Users</strong></p>
+            </div>
+            <div class="col-sm-4">
+                <p> Use this tab to search for other musicians.
+                    Fill all inputs for most specific results.
+                    Proximity refers to distance from your location.</p>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-sm-1">
+                <p><strong>Bands</strong></p>
+            </div>
+            <div class="col-sm-4">
+                <p>Use this tab to search for bands to join.
+                    Fill all inputs for most specific results.
+                    Proximity refers to distance from your location.</p>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-sm-1">
+                <p><strong>Create</strong></p>
+            </div>
+            <div class="col-sm-4">
+                <p>Use this tab to create your own bands.<br>
+                    <em>(Note:  You will automatically join the band and leave your old band upon creation).</em></p>
+            </div>
+        </div>
+
+        <div class="row justify-content-center fixed-bottom">
+            <p style="text-align: center;"><strong>2021plu</strong><br>
+                Mobile/Web Lab Senior Research Project</p>
+        </div>
+    </div>
+    {% endblock %}
+</body>
+
+</html>

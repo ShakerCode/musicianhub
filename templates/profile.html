@@ -1,0 +1,78 @@
+{% include 'base.html' %}
+
+{% load static %}
+
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/profiles.css' %}">
+</head>
+
+<body>
+    {% block content %}
+    {% if user.is_authenticated %}
+    <div class="container-fluid">
+        <div class="row justify-content-center pt-5">
+            <div class="card w-50" style="background-color: #b19cd9;">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <h1 class="card-title">{{user.username}}</h1>
+                            <h3>{{user.email}}</h3>
+                            <p>Name: {{user.first_name}} {{user.last_name}}</p>
+                            <p>Instrument: {{user.instrument}}</p>
+                            <p id="user_band">Band: {{user.band}}</p>
+                            {% if user.band != None %}
+                            <form id="leaveForm" action="{% url 'leave_band' %}" action="post">
+                                <button class="btn btn-dark" type="submit">Leave Band</button>
+                            </form>
+                            {% else %}
+                            <button class="btn btn-dark" type="submit" disabled>Leave Band</button>
+                            {% endif %}
+                        </div>
+                        <div class="col-sm-8">
+                            <img class="card-img" src="{% static 'img/logo2_halfsize.png' %}" alt="User Image">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <p style="text-align: center;">Log in to check your profile</p>
+    {% endif %}
+    <script>
+        $(document).ready(function () {
+            var token = '{{csrf_token}}';
+            var user_pk = '{{user.pk}}';
+
+            $('form').submit(function (event) {
+                $.ajax({
+                    headers: { "X-CSRFToken": token },
+                    url: "{% url 'leave_band' %}",
+                    method: 'POST',
+                    data: {
+                        'user_pk': user_pk
+                    },
+                    beforeSend: function () {
+                        return confirm("Are you sure you want to leave?");
+                    },
+                    success: function (data) {
+                        console.log(data);
+                        $('form').find('button').prop('disabled', true);
+                        $('#user_band').text("None");
+                    },
+                    error: function (response) {
+                        console.log("Something went wrong: " + response);
+                    }
+                });
+                event.preventDefault();
+            });
+        });
+    </script>
+    {% endblock %}
+</body>
+
+</html>

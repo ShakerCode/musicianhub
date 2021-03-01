@@ -1,0 +1,214 @@
+{% include 'base.html' %}
+{% load static %}
+
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/bands.css' %}">
+    <script src="{% static 'js/bands.js' %}"></script>
+</head>
+
+<body>
+    {% block content %}
+    <div class="container-fluid wrapper">
+        <div class="row justify-content-center">
+            <h1>Band Search</h1>
+        </div>
+        <div class="row justify-content-center">
+            {% if user.is_authenticated %}
+            <p>Use filters to narrow down your searches!</p>
+        </div>
+
+        <form id="bandSearchForm" name="bandSearchForm" action="{% url 'search_band' %}"
+            onsubmit="return validateForm()" method="get">
+            {% csrf_token %}
+            <div class="form-group row justify-content-center">
+                <!-- <label for="bands_search" class="col-1 col-form-label">Search:</label> -->
+                <div class="col-sm-6">
+                    <input class="form-control" id="bands_search" name="bandname" type="text" placeholder="Band Name">
+                </div>
+            </div>
+
+            <div class="form-group row justify-content-center">
+                <!-- <div class="col-5 mx-auto"> -->
+                <button class="btn btn-success" type="submit">Search!</button>
+                <button class="btn btn-dark" type="button" data-toggle="collapse" data-target="#band_filters"
+                    aria-expanded="false" aria-controls="band_filters">Filters</button>
+                <input class="btn btn-danger" type="reset" name="reset">
+                <!-- </div> -->
+            </div>
+
+            <div class="collapse" id="band_filters">
+                <div class="form-group row justify-content-center">
+                    <div class="col-sm-6">
+                        <div class="card border-dark" style="background-color: #add8e6;">
+                            <div class="card-body">
+
+                                <label for="genre">Genre:</label>
+                                <input class="form-control" id="genre" name="genre" type="text" placeholder="Genre">
+                                <br>
+
+                                <label for="proximity">Proximity (mi):</label>
+                                <input class="form-control" id="proximity" name="proximity" type="text" value="12500">
+                                <br>
+
+                                <div class="slidecontainer">
+                                    <label for="total_members">Total Members: </label>
+                                    <input type="range" min="1" max="100" value="50" class="slider" id="slider"
+                                        name="total_members">
+                                    <p id="sliderOutput" style="display: inline-block;">50</p>
+                                </div>
+
+                                <label for="sortType" class="col-xs col-form-label">Sort By:</label>
+                                <select class="form-control" name="sortType" id="sortType">
+                                    <option value="none" selected disabled hidden>-----</option>
+                                    <option value="bandname">Band Name</option>
+                                    <option value="location">Proximity</option>
+                                    <option value="genre">Genre</option>
+                                    <option value="total_members">Total Members</option>
+                                </select>
+
+                                <script>
+                                    var slider = document.getElementById("slider")
+                                    var sliderOutput = document.getElementById("sliderOutput")
+                                    sliderOutput.innerHTML = slider.value;
+
+                                    slider.oninput = function () {
+                                        sliderOutput.innerHTML = this.value;
+                                    } 
+                                </script>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <input name="userpk" id="userpk" value="{{user.pk}}" hidden>
+            {% for band in all_objects %}
+            <div class="form-group row justify-content-center">
+                <div class="card w-50 border-dark" style="background-color: #DCDCDC;">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <div class="joinBandRow">
+                                    <h5 class="card-title">
+                                        <a href="{% url 'band_profile' band.pk %}"
+                                            style="display:inline">{{band.bandname}}</a>
+                                    </h5>
+
+                                    <p id="totalmembers">Total members: {{band.total_members}}</p>
+                                    <p id="genre">Genre: {{band.genre}}</p>
+                                    <p id="city">City: {{band.city}}</p>
+                                    <!-- <p id="bandpk">pk:{{band.pk}}</p> -->
+                                    {% if user.band != band %}
+                                    <button class="btn btn-dark" type="button" value={{band.pk}}>Join!</button>
+                                    {% else %}
+                                    <button class="btn btn-dark" type="button" value={{band.pk}} disabled>Join!</button>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="col-sm-5">
+                                <p>{{band.description}}</p>
+                            </div>
+                            <div class="col-sm-3">
+                                <img class="card-img" src="{% static 'img/logo2_halfsize.png' %}" alt="User Image">
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <!-- <p>-----</p> -->
+            {% endfor %}
+        </form>
+    </div>
+    <!-- </div>
+    </div> -->
+
+    <script>
+        $(document).ready(function () {
+            var token = '{{csrf_token}}';
+            var i = 0;
+
+            $('.joinBandRow').each(function () {
+                var curButton = $(this).find('button');
+                var band_pk = curButton.val();
+
+
+                $(this).attr('id', 'joinBandButton' + i);
+                var curID = '#joinBandButton' + i;
+                console.log("CURID: " + curID);
+                i++;
+
+                curButton.click(function (event) {
+                    $.ajax({
+                        headers: { "X-CSRFToken": token },
+                        url: "{% url 'join_band' %}",
+                        method: 'POST',
+                        data: {
+                            'user_pk': '{{user.pk}}',
+                            'band_pk': band_pk
+                        },
+                        success: function (response) {
+                            console.log('{{user.band}}');
+                            console.log('NEW TOTAL MEMBERS: ' + response.total_members);
+
+                            $('.joinBandRow').find('button').prop('disabled', false);
+                            $(curID).find('button').prop('disabled', true);
+                            $(curID).find('#totalmembers').text(', Total members: ' + response.total_members);
+                            alert('joined band!');
+                        },
+                        error: function (response) {
+                            console.log("RESPONSE ERROR");
+                        }
+                    });
+                    return false;
+                });
+            });
+        });
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            $("#bands_search").autocomplete({
+                source: function (request, response) {
+                    $.ajax({
+                        url: "{% url 'autocomplete' %}",
+                        dataType: 'json',
+                        data: {
+                            'term': request.term,
+                            'searchType': 'bandsSearch'
+                        },
+                        success: function (data) {
+                            response(data)
+                        }
+                    });
+                },
+                minLength: 2,
+                open: function () {
+                    setTimeout(function () {
+                        $('.ui-autocomplete').css('z-index', 99);
+                    }, 0);
+                }
+            });
+        });
+    </script>
+
+    <!-- <form action="{% url 'search' %}" method="get">
+    {% csrf_token %}
+    <input type="text" id="instrument_search" name="instrument_search">
+    <button type="submit" class="btn btn-default btn-submit">Submit</button>
+  </form> -->
+
+    {% else %}
+    <p>Log in to search for bands</p>
+    {% endif %}
+
+    {% endblock %}
+</body>
+
+</html>

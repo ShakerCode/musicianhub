@@ -1,0 +1,137 @@
+{% include 'base.html' %}
+{% load static %}
+
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/bands.css' %}">
+</head>
+
+<body>
+    {% block content %}
+    <div class="container-fluid wrapper">
+        <div class="row justify-content-center">
+            <h1>Band Creation</h1>
+        </div>
+        <div class="row justify-content-center">
+            {% if user.is_authenticated %}
+            <p>All blank inputs are required. You must also place your band location on the map below. </p>
+        </div>
+
+
+        <form action="{% url 'create_band' %}" method=post>
+            <div class="row">
+                <div class="col-5">
+                    <div class="form-group row">
+                        <label for="bandname" class="col-sm-3 col-form-label">Band name:</label>
+                        <div class="col-sm-9">
+                            <input class="form-control" id="bandname" name="bandname" type="text" required>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="city" class="col-sm-3 col-form-label">City:</label>
+                        <div class="col-sm-9">
+                            <input class="form-control" id="city" name="city" type="text" required>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="genre" class="col-sm-3 col-form-label">Genre:</label>
+                        <div class="col-sm-9">
+                            <input class="form-control" id="genre" name="genre" type="text" required>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="description" class="col-sm-3 col-form-label">Description</label>
+                        <div class="col-sm-9">
+                            <textarea class="form-control" id="description" name="description" type="text"
+                                required></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col mx-auto">
+                            <button class="btn btn-success" type=submit id="createBandButton" data-toggle="tooltip"
+                                data-placement="top" title="Place band location the map" disabled>Create</button>
+                            <button class="btn btn-danger" type=button id="reset" onclick="resetinputs()">Reset</button>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col mx-auto">
+                            <p id="returnMessage"></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-7 pl-5">
+                    <!-- <div class="form-group row"> -->
+                    {{ markers|json_script:"markers-data" }}
+                    <div id="map"></div>
+                    <script src="{% static 'js/map.js' %}"></script>
+                    <!-- </div> -->
+                </div>
+            </div>
+
+
+
+
+            <!-- <label for="city">City:</label>
+            <input id="city" name="city" type="text" required>
+            <br>
+
+            <label for="genre">Genre:</label>
+            <input id="genre" name="genre" type="text" required>
+            <br>
+
+            <label for="description">Description</label>
+            <textarea id="description" name="description" type="text" required></textarea>
+            <br> -->
+
+
+            <input id=lng type="hidden">
+            <input id=lat type="hidden">
+        </form>
+
+    </div>
+
+    <script>
+        $(document).ready(function () {
+            var token = '{{csrf_token}}';
+            var user_pk = '{{user.pk}}'
+            var createBandButton = $('#createBandButton');
+
+            $('form').submit(function (event) {
+                console.log($('#latlng').val());
+                $.ajax({
+                    headers: { "X-CSRFToken": token },
+                    url: "{% url 'create_band' %}",
+                    method: 'POST',
+                    data: {
+                        'bandname': $('#bandname').val(),
+                        'city': $('#city').val(),
+                        'genre': $('#genre').val(),
+                        'description': $('#description').val(),
+                        'lng': $('#lng').val(),
+                        'lat': $('#lat').val(),
+                        'user_pk': user_pk
+                    },
+                    success: function (data) {
+                        $('#returnMessage').text(data);
+                    },
+                    error: function (response) {
+                        $('#returnMessage').text(response);
+                    }
+                }).done(function (response) {
+                    console.log(response);
+                });
+                event.preventDefault();
+            });
+        });
+    </script>
+    {% else %}
+    <p>Log in to search for bands</p>
+    {% endif %}
+    {% endblock %}
+
+</body>
+
+</html>

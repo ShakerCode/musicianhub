@@ -1,0 +1,48 @@
+{% include 'base.html' %}
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+
+<head>
+
+</head>
+
+<body>
+    {% block content %}
+    {% if user.is_authenticated %}
+
+    <div class="container-fluid">
+        <div class="row justify-content-center pt-5">
+            <div class="card w-50" style="background-color: #b19cd9;">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <h1 class="card-title">{{searched_user.username}}</h1>
+                            <h3>{{searched_user.email}}</h3>
+                            <p>Band: {{searched_user.band}}</p>
+                            <p>Instrument: {{searched_user.instrument}}</p>
+                            <p>Age: {{searched_user.age}}</p>
+                        </div>
+                        <div class="col-sm-8">
+                            <img class="card-img" src="{% static 'img/logo2_halfsize.png' %}" alt="User Image">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row justify-content-center pt-3">
+            <div class="col-6 mr-4">
+                <a class="btn btn-dark" href="{{request.META.HTTP_REFERER}}">Back</a>
+            </div>
+        </div>
+
+        {% else %}
+        <p style="text-align: center;">Log in to check user profiles</p>
+        {% endif %}
+
+
+        {% endblock %}
+</body>
+
+</html>

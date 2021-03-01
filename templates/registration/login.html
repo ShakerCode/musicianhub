@@ -1,0 +1,35 @@
+{% include 'base.html' %}
+
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head></head>
+
+<body>
+  {% block content %}
+  <div class="container-fluid">
+    <h2>Log In</h2>
+    <form method="post">
+      {% csrf_token %}
+      {% for field in form %}
+      <div class="form-group row">
+        <label for="{{field.id_for_label}}" class="col-sm-1 col-form-label">{{field.label}}:</label>
+        <div class="col-sm-3">
+          {% if field.html_name == 'password' %}
+          <input class="form-control" id="{{field.id_for_label}}" name="{{field.html_name}}" type="password">
+          {% else %}
+          <input class="form-control" id="{{field.id_for_label}}" name="{{field.html_name}}" type="text">
+          {% endif %}
+        </div>
+      </div>
+      {% endfor %}
+      <button class="btn btn-dark" type="submit">Log In</button>
+    </form>
+    <br>
+    <p>Need an account? <a href="{% url 'register' %}">Register here</a></p>
+  </div>
+  {% endblock %}
+</body>
+
+</html>

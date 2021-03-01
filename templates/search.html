@@ -1,0 +1,120 @@
+{% include 'base.html' %}
+{% load static %}
+
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+  <link rel="stylesheet" type="text/css" href="{% static 'css/search.css' %}">
+  <script src="{% static 'js/search.js' %}"></script>
+</head>
+
+<body>
+  {% block content %}
+  <div class="container-fluid wrapper">
+    <div class="row justify-content-center">
+      <h1>User Search</h1>
+    </div>
+    <div class="row justify-content-center">
+      {% if user.is_authenticated %}
+      <p>Search for users by criteria</p>
+    </div>
+
+
+    <form id="searchForm" onsubmit="return validateForm()" action="{% url 'search_user' %}" method="get">
+      {% csrf_token %}
+      <div class="user_inputs">
+
+        <div class="form-group row justify-content-center">
+          <label class="col-sm-1 col-form-label" for="instrument">Instrument: </label>
+          <div class="col-sm-6">
+            <input class="form-control" id="instrument" name="instrument" type="text" placeholder="Instrument">
+          </div>
+        </div>
+
+        <div class="form-group row justify-content-center">
+          <label class="col-sm-1 col-form-label" for="proximity">Proximity (mi):</label>
+          <div class="col-sm-6">
+            <input class="form-control" id="proximity" name="proximity" type="text" value="12500" required>
+          </div>
+        </div>
+
+        <div class="form-group row justify-content-center">
+          <label class="col-sm-1 col-form-label" for="age">Age:</label>
+          <div class="col-sm-6">
+            <select class="custom-select" id="age" name="age">
+              <option value="0,10">0-10 years</option>
+              <option value="10,20">10-20 years</option>
+              <option value="20,30">20-30 years</option>
+              <option value="30,40">30-40 years</option>
+              <option value="40,50">40-50 years</option>
+              <option value="50,60">50-60 years</option>
+              <option value="60+">60+ years</option>
+            </select>
+          </div>
+        </div>
+
+        <fieldset class="form-group">
+          <div class="row justify-content-center">
+            <legend class=" col-sm-1 pt-0 col-form-label">In Band:</legend>
+            <div class="col-sm-6">
+              <div class="form-check">
+                <input class="form-check-input" id="yes" name="in_a_band" value="yes" type="radio" required>
+                <label class="form-check-label" for="yes">Yes</label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" id="no" name="in_a_band" value="no" type="radio">
+                <label class="form-check-label" for="no">No</label>
+              </div>
+            </div>
+          </div>
+        </fieldset>
+
+        <div class="form-group row justify-content-center">
+          <button class="btn btn-success" type="submit">Search!</button>
+          <input class="btn btn-danger" type="reset" name="reset">
+        </div>
+
+      </div>
+
+      <input name="userpk" id="userpk" value="{{user.pk}}" hidden>
+      {% for musicuser in all_objects %}
+      <div class="form-group row justify-content-center">
+        <div class="card w-50 border-dark" style="background-color: #b19cd9;">
+          <div class="card-body">
+            <div class="row">
+              <div class="col-sm-8">
+                <h5 class="card-title">
+                  <a href="{% url 'user_profile' musicuser.pk %}">{{musicuser.first_name}} {{musicuser.last_name}}</a>
+                </h5>
+                <p id="username"><strong>Username: {{musicuser.username}}</strong></h6>
+                <p id="instrument">Instrument: {{musicuser.instrument}}</p>
+                <p id="age">Age: {{musicuser.age}}</p>
+              </div>
+              <div class="col-sm-4">
+                <img class="card-img" src="{% static 'img/logo2_halfsize.png' %}" alt="User Image">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% empty %}
+      <!-- <p>-----</p> -->
+      {% endfor %}
+    </form>
+
+  </div>
+
+  <input type="hidden" , id="autocomplete_url" data-url="{% url 'autocomplete' %}">
+
+  <script src="{% static 'js/search.js' %}"></script>
+
+  {% else %}
+  <p>Log in to search for users</p>
+  {% endif %}
+  {% endblock %}
+
+</body>
+
+</html>
