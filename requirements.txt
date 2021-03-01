@@ -21,8 +21,6 @@ daphne==2.5.0
 distlib==0.3.1
 Django==3.1.1
 django-geojson==3.1.0
-# Editable install with no version control (django-leaflet==0.27.1)
--e c:\users\philip\appdata\local\programs\python\python38\lib\site-packages
 django-messages==0.6.0
 enum34==1.1.6
 filelock==3.0.12
@@ -46,7 +44,6 @@ Pillow==7.2.0
 psycopg2-binary==2.8.6
 pyasn1==0.4.8
 pyasn1-modules==0.2.8
-PyAudio @ file:///C:/Philip/misc/PyAudio-0.2.11-cp38-cp38-win_amd64.whl
 pycodestyle==2.6.0
 pycparser==2.20
 PyHamcrest==2.0.2
@@ -65,7 +62,6 @@ service-identity==18.1.0
 six==1.15.0
 sqlparse==0.3.1
 toml==0.10.1
-Twisted @ file:///C:/Philip/misc/Twisted-20.3.0-cp38-cp38-win_amd64.whl
 txaio==20.4.1
 urllib3==1.24.3
 virtualenv==20.4.2
