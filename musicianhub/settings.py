@@ -25,8 +25,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'e3sjdvpo8wbegh&5g7vfmgbr_gxu!_h+tkkpf5#c)kg4x2y2=_'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-# DEBUG = False
+# DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = [
     'localhost',
@@ -96,15 +96,7 @@ DATABASES = {
         'PASSWORD': 'shakerpgres',
         'HOST': '127.0.0.1',
         'PORT': '5432'
-    },
-    # 'gis': {
-    #     'ENGINE': 'django.contrib.gis.db.backends.postgis',
-    #     'NAME': 'gis',
-    #     'USER': 'postgres',
-    #     'PASSWORD': 'shakerpgres',
-    #     'HOST': '127.0.0.1',
-    #     'PORT': '5432'
-    # }
+    }
 }
 
 
