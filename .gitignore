@@ -1,5 +1,4 @@
 .vscode/
-static_build/
 
 # Python 
 __pycache__
