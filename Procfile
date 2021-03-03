@@ -1,0 +1,1 @@
+web: gunicorn musicianhub.wsgi --log-file -
