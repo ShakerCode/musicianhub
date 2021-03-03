@@ -28,7 +28,9 @@ SECRET_KEY = 'e3sjdvpo8wbegh&5g7vfmgbr_gxu!_h+tkkpf5#c)kg4x2y2=_'
 DEBUG = True
 # DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'shielded-headland-25261.herokuapp.com'
+    ]
 
 
 # Application definition
