@@ -14,7 +14,8 @@ class RegisterView(CreateView):
         valid = super(RegisterView, self).form_valid(form)
         username, password = form.cleaned_data.get('username'), form.cleaned_data.get('password1')
         new_user = authenticate(username=username, password=password)
-        login(self.request, new_user)
+        if new_user is not None:
+            login(self.request, new_user)
         return valid
 
 
