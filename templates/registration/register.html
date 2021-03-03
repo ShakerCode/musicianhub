@@ -23,7 +23,7 @@
           {% if field.html_name != 'location'%}
           <div class="form-group row">
             <label for="{{field.id_for_label}}" class="col-sm-3 col-form-label">{{field.label}}:</label>
-            <div class="col-sm-5">
+            <div class="col-sm-7">
               {% if field.html_name == 'password1' or field.html_name == 'password2' %}
               <input class="form-control" id="{{field.id_for_label}}" name="{{field.html_name}}" type="password">
               {% else %}

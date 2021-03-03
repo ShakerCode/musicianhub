@@ -159,7 +159,7 @@
 
                             $('.joinBandRow').find('button').prop('disabled', false);
                             $(curID).find('button').prop('disabled', true);
-                            $(curID).find('#totalmembers').text(', Total members: ' + response.total_members);
+                            $(curID).find('#totalmembers').text('Total members: ' + response.total_members);
                             alert('joined band!');
                         },
                         error: function (response) {

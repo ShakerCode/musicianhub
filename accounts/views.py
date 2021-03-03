@@ -7,7 +7,7 @@ from .forms import MusicUserCreationForm
 
 class RegisterView(CreateView):
     form_class = MusicUserCreationForm
-    success_url = reverse_lazy('/')
+    success_url = reverse_lazy('login')
     template_name = 'registration/register.html'
 
     def form_valid(self, form):

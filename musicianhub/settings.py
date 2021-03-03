@@ -29,9 +29,9 @@ DEBUG = True
 # DEBUG = False
 
 ALLOWED_HOSTS = [
+    'localhost',
     'musicianhub2021plu.herokuapp.com'
     ]
-
 
 # Application definition
 
@@ -76,6 +76,10 @@ TEMPLATES = [
             ],
         },
     },
+]
+
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend'
 ]
 
 WSGI_APPLICATION = 'musicianhub.wsgi.application'
