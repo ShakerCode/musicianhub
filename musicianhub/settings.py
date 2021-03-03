@@ -163,6 +163,8 @@ if os.name == 'nt':
     os.environ['GDAL_DATA'] = OSGEO4W + r"\share\gdal"
     os.environ['PROJ_LIB'] = OSGEO4W + r"\share\proj"
     os.environ['PATH'] = OSGEO4W + r"\bin;" + os.environ['PATH']
+    os.environ['GEOS_LIBRARY_PATH'] = OSGEO4W + r"\bin\geos_c"
+    os.environ['GDAL_LIBRARY_PATH'] = OSGEO4W + r"\bin\gdal301"
 
 import dj_database_url
 db_from_env = dj_database_url.config(conn_max_age=500)
