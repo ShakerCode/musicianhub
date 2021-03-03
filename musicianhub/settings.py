@@ -29,7 +29,7 @@ DEBUG = True
 # DEBUG = False
 
 ALLOWED_HOSTS = [
-    'https://musicianhub2021plu.herokuapp.com'
+    'musicianhub2021plu.herokuapp.com'
     ]
 
 
