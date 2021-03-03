@@ -44,12 +44,11 @@ def search_band(request):
             return redirect('bands')
         all_objects = None
         bandname, genre, proximity, total_members = request.GET.get('bandname'), request.GET.get('genre'), request.GET.get('proximity').strip(), request.GET.get('total_members')
-        if bandname != '':
-            sortType, user_pk = request.GET.get('sortType'), request.GET.get('userpk')
-            # user_pk = request.GET.get('userpk')
-            print(bandname, genre, proximity, total_members)
-            all_objects = filter_band_list(bandname, genre, proximity, total_members, user_pk)
-            all_objects = sort_band_list(all_objects, sortType, user_pk)
+        sortType, user_pk = request.GET.get('sortType'), request.GET.get('userpk')
+        # user_pk = request.GET.get('userpk')
+        print(bandname, genre, proximity, total_members)
+        all_objects = filter_band_list(bandname, genre, proximity, total_members, user_pk)
+        all_objects = sort_band_list(all_objects, sortType, user_pk)
     return render(request, 'bands.html', {'all_objects': all_objects})
 
 
