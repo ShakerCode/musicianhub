@@ -17,6 +17,19 @@ class MusicUserCreationForm(UserCreationForm):
         model = MusicUser
         fields = ['email', 'username', 'first_name', 'last_name', 'instrument', 'age', 'password1', 'password2', 'location']
 
+class MusicUserUpdateForm(ModelForm):
+
+    location = gis_forms.PointField(widget=gis_forms.OSMWidget(attrs={
+        'map_width': 1100,
+        'map_height': 750,
+        'default_lat': 0,
+        'default_lon': 0,
+        'default_zoom': 2}))
+
+    class Meta:
+        model = MusicUser
+        fields = ['first_name', 'last_name', 'instrument', 'age', 'location']
+
 class MusicUserChangeForm(UserChangeForm):
 
     class Meta:

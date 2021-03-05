@@ -1,0 +1,65 @@
+{% include 'base.html' %}
+{% load static %}
+
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    {{form.media}}
+</head>
+
+<body>
+    {% block content %}
+    {% if user.is_authenticated %}
+    <div class="container-fluid wrapper">
+        <!-- <form action="{% url 'edit_profile' %}" method="get">
+            <input id="pk" value="{{user.pk}}" type=hidden>
+        </form> -->
+        <h2>Edit {{user.username}}'s profile</h2>
+        <form method="post">
+            {% csrf_token %}
+            <div class="row">
+                <div class="col-4">
+                    {% for field in form %}
+                    {% if field.html_name != 'location'%}
+                    <div class="form-group row">
+                        <label for="{{field.id_for_label}}" class="col-sm-3 col-form-label">{{field.label}}:</label>
+                        <div class="col-sm-7">
+                            <input class="form-control" id="{{field.id_for_label}}" name="{{field.html_name}}" value="{{field.value}}"
+                                type="text" required>
+                        </div>
+                    </div>
+                    {{field.errors}}
+                    {% endif %}
+                    {% endfor %}
+                    <div class="form-group row">
+                        <div class="col">
+                            <button class="btn btn-success" type="submit">Save</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-8">
+                    <div class="row">
+                        <div class="col-sm-1">
+                            <p>Location:</p>
+                        </div>
+                        <div class="col-sm-9">
+                            {{form.location}}
+                            {{form.location.errors}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </form>
+
+
+    </div>
+    {% else %}
+    <p style="text-align: center;">Log in to edit your profile</p>
+    {% endif %}
+    {% endblock %}
+</body>
+
+</html>

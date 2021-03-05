@@ -1,7 +1,7 @@
 from django.urls import reverse_lazy
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import ListView
-from django.views.generic.edit import CreateView
+from django.views.generic.edit import CreateView, UpdateView
 from django.contrib.auth import authenticate, login
 from django.contrib.gis.db import models as gis_models
 from django.contrib.gis.db.models.functions import Distance
@@ -13,6 +13,7 @@ from accounts.models import MusicUser, Band
 from django.db.models import Q, F
 from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
 from .forms import BandCreationForm
+from accounts.forms import MusicUserUpdateForm
 from django.views.decorators.csrf import csrf_exempt
 import json
 
@@ -198,6 +199,15 @@ def user_profile(request, pk):
 
 def my_profile(request):
     return render(request, 'profile.html')
+
+class EditProfileView(UpdateView):
+    model = MusicUser
+    form_class = MusicUserUpdateForm
+    success_url = reverse_lazy('my_profile')
+    template_name = "edit_profile.html"
+
+    def get_object(self):
+        return get_object_or_404(MusicUser, pk=self.request.user.id)
 
 def autocomplete(request):
     if 'term' in request.GET:

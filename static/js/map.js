@@ -12,7 +12,16 @@ const markers = JSON.parse(document.getElementById('markers-data').textContent);
 // console.log(markers);
 
 let feature = L.geoJSON(markers).bindPopup(function (layer) {
-    var popup_text = layer.feature.properties.bandname + ', ' + layer.feature.properties.city;
+    console.log("layer");
+    var fields = {
+        bandname: layer.feature.properties.bandname,
+        city: layer.feature.properties.city,
+        leader: layer.feature.properties.leader,
+        total_members: layer.feature.properties.total_members,
+        genre: layer.feature.properties.genre
+
+    }
+    var popup_text = "<p><strong>" + fields['bandname'] + "</strong><br>" + fields['total_members'] + " members" + "<br>" + "City: " + fields['city'] + "</p>";
     return popup_text;
 }).addTo(map);
 
@@ -34,8 +43,12 @@ function resetinputs() {
     document.getElementById('bandname').value="";
     document.getElementById('city').value="";
     document.getElementById('genre').value="";
-    map.removeLayer(newMarker);
+    document.getElementById('description').value="";
     document.getElementById('createBandButton').disabled = true;
+
+    if(map.hasLayer(newMarker)) {
+        map.removeLayer(newMarker);
+    }
 }
 
 // map.fitWorld();

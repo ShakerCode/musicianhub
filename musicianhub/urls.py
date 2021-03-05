@@ -18,7 +18,7 @@ from django.urls import path, include
 from django.conf.urls import include, url
 from django.views.generic.base import TemplateView
 from . import views
-from .views import CreateBandView
+from .views import CreateBandView, EditProfileView
 # from .views import SearchView
 
 urlpatterns = [
@@ -35,6 +35,8 @@ urlpatterns = [
     path('band/<int:pk>', views.band_profile, name='band_profile'),
     path('user/<int:pk>', views.user_profile, name='user_profile'),
     path('my_profile', views.my_profile, name='my_profile'),
+    # path('edit_profile', views.edit_profile, name='edit_profile'),
+    path('edit_profile', EditProfileView.as_view(), name='edit_profile'),
     path('autocomplete', views.autocomplete, name='autocomplete'),
     path('admin/', admin.site.urls),
     path('accounts/', include('accounts.urls')),

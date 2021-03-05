@@ -24,12 +24,15 @@
                             <p>Name: {{user.first_name}} {{user.last_name}}</p>
                             <p>Instrument: {{user.instrument}}</p>
                             <p id="user_band">Band: {{user.band}}</p>
+                            <form id="edit_profile" action="{% url 'edit_profile' %}">
+                                <button class="btn btn-dark" type="submit">Edit Profile</button>
+                            </form>
                             {% if user.band != None %}
                             <form id="leaveForm" action="{% url 'leave_band' %}" action="post">
-                                <button class="btn btn-dark" type="submit">Leave Band</button>
+                                <button class="btn btn-danger" type="submit">Leave Band</button>
                             </form>
                             {% else %}
-                            <button class="btn btn-dark" type="submit" disabled>Leave Band</button>
+                            <button class="btn btn-danger" type="submit" disabled>Leave Band</button>
                             {% endif %}
                         </div>
                         <div class="col-sm-8">
@@ -48,7 +51,7 @@
             var token = '{{csrf_token}}';
             var user_pk = '{{user.pk}}';
 
-            $('form').submit(function (event) {
+            $('#leaveForm').submit(function (event) {
                 $.ajax({
                     headers: { "X-CSRFToken": token },
                     url: "{% url 'leave_band' %}",

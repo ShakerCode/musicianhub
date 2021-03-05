@@ -72,8 +72,8 @@ class MusicUser(AbstractUser):
             'unique': ("A user with that username already exists."),
         },
     )
-    first_name = models.CharField(('first name'), max_length=150, blank=True, validators=[alphabetical_dash_underscore])
-    last_name = models.CharField(('last name'), max_length=150, blank=True, validators=[alphabetical_dash_underscore])
+    first_name = CapitalizedCityField(('first name'), max_length=150, blank=True, validators=[alphabetical_dash_underscore])
+    last_name = CapitalizedCityField(('last name'), max_length=150, blank=True, validators=[alphabetical_dash_underscore])
 
     instrument = LowerCaseCharField(default=None, null=True, blank=True, max_length=80, validators=[alphabetical_dash_underscore])
     age = models.IntegerField(default=None, null=True, blank=True)
@@ -88,9 +88,3 @@ class MusicUser(AbstractUser):
 
     def __str__(self):
         return str(self.email)
-
-# class Messages(models.Model):
-#     sender = models.ForeignKey(MusicUser, default=None, null=True, blank=True, on_delete=models.CASCADE)
-#     receiver = models.ForeignKey(MusicUser, default=None, null=True, blank=True, on_delete=models.CASCADE)
-#     message_text = models.TextField(max_length=1000, default=None, null=True, blank=True)
-#     timestamp = models.TimeField(auto_now_add=True)

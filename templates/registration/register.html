@@ -15,7 +15,7 @@
   {% block content %}
   <div class="container-fluid">
     <h2>Register</h2>
-    <form method="post">
+    <form id="register_form" method="post">
       {% csrf_token %}
       <div class="row">
         <div class="col-3">
@@ -24,19 +24,25 @@
           <div class="form-group row">
             <label for="{{field.id_for_label}}" class="col-sm-3 col-form-label">{{field.label}}:</label>
             <div class="col-sm-7">
-              {% if field.html_name == 'password1' or field.html_name == 'password2' %}
-              <input class="form-control" id="{{field.id_for_label}}" name="{{field.html_name}}" type="password">
-              {% else %}
-              <input class="form-control" id="{{field.id_for_label}}" name="{{field.html_name}}" type="text">
+              <input class="form-control" id="{{field.id_for_label}}" name="{{field.html_name}}" type="text" required>
+              {% if field.errors %}
+              {% for error in field.errors %}
+              <p id="error_message">{{error}}</p>
+              {% endfor %}
               {% endif %}
-
             </div>
           </div>
-          {{field.errors}}
           {% endif %}
           {% endfor %}
+
+          <script>
+            document.getElementById('id_age').type = 'number';
+            document.getElementById('id_password1').type = 'password';
+            document.getElementById('id_password2').type = 'password';
+          </script>
+
           <div class="form-group row">
-            <button class="btn btn-dark" type="submit">Register</button>
+            <button class="btn btn-dark" onsubmit="validate()" type="submit">Register</button>
           </div>
         </div>
         <div class="col-9">
@@ -46,12 +52,39 @@
             </div>
             <div class="col-sm-9">
               {{form.location}}
+              {% if form.location.errors %}
+              {% for error in form.location.errors %}
+              <p id="error_message">{{error}}</p>
+              {% endfor %}
+              {% endif %}
             </div>
           </div>
         </div>
       </div>
-
     </form>
+
+    <!-- <script>
+      $(document).ready(function () {
+        $(".needs-validation").on('subimt', function (e) {
+          var all_valid = true;
+          console.log("here??");
+          $(".field_errors").each(function (error) {
+            console.log('field_errors');
+            if ($(this).val() !== '') {
+              all_valid = false
+              console.log($(this).val());
+            }
+            console.log(all_valid);
+          });
+          if (all_valid === false) {
+            e.preventDefault();
+            e.stopPropagation();
+          }
+          $(this).addClass('was-validated');
+        });
+      });
+    </script> -->
+
   </div>
   {% endblock %}
 </body>
