@@ -25,7 +25,7 @@
                             <p>Instrument: {{user.instrument}}</p>
                             <p id="user_band">Band: {{user.band}}</p>
                             <form id="edit_profile" action="{% url 'edit_profile' %}">
-                                <button class="btn btn-dark" type="submit">Edit Profile</button>
+                                <button id="submit_button" class="btn btn-dark" type="submit">Edit Profile</button>
                             </form>
                             {% if user.band != None %}
                             <form id="leaveForm" action="{% url 'leave_band' %}" action="post">

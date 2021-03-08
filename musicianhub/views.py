@@ -84,6 +84,7 @@ def leave_band(request):
         leave_band_helper(user, old_band)
 
     return HttpResponse("Successfully left band")
+    # return render(request, 'edit_profile')
 
 def filter_user_list(instrument, age, proximity, in_band, user_pk):
     returnList = None
@@ -179,12 +180,12 @@ def join_band_helper(user, new_band): # helper method for whenever a user joins/
 
 def leave_band_helper(user, old_band):
     user.band = None
+    user.save()
     old_band.total_members -= 1
     if old_band.total_members == 0:
         old_band.leader = None
     else:
         old_band.leader = Band.objects.get(pk=old_band.pk).musicuser_set.first().email
-    user.save()
     old_band.save()
 
 
